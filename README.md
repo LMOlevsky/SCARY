@@ -32,7 +32,7 @@ States will be colored based on the data collected and will have different color
 
 When no interactions (would show crime rate instead of unemployment rate):
 
-![Map](https://bl.ocks.org/mbostock/raw/4060606/)
+https://bl.ocks.org/mbostock/raw/4060606/
 
 When hovering (except with types of crime and not all at once):
 
