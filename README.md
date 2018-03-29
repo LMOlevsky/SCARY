@@ -30,9 +30,10 @@ States will be colored based on the data collected and will have different color
 
 #### Sketch/mock-up/screenshot of your envisioned visualization.
 
-
 When no interactions (would show crime rate instead of unemployment rate):
 
+![Map](https://bl.ocks.org/mbostock/raw/4060606/)
 
 When hovering (except with types of crime and not all at once):
 
+![Map 2]()
