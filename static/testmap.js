@@ -12,10 +12,10 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
 	.enter().append("path")
 	.attr("d", path);
 
-    d3.selectAll("h3")
+    d3.selectAll(us.objects.states)
 	.style("color", function()
 	       {
-		   return "blue";
+		   return "red";
 	       });
 
     //apply state borders attributes
