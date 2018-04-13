@@ -10,21 +10,14 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
 	.selectAll("path")
 	.data(topojson.feature(us, us.objects.states).features)
 	.enter().append("path")
-	.attr("d", path)
-	;
+	.attr("d", path);
 
     console.log("HEY");
     d3.selectAll("path")
 	.style("fill", function(d, i) {
 	    console.log(i);
-	    return "red";
+	    return "rgb(" + (Math.floor((Math.random()*50)))*8 + ",0,0)";
 	});
-/*    console.log( states );
-    d3.selectAll("states")
-	.style("fill", function(d, i) {
-	    console.log(i);
-	    return "red";
-	});*/
 
     //apply state borders attributes
     svg.append("path")
