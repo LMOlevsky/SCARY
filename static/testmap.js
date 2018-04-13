@@ -3,7 +3,7 @@ var path = d3.geoPath();
 
 var states=[];
 for (var i = 0; i < 50; i++) {
-    states.push((Math.floor((Math.random()*100)))*0.01);
+    states.push((Math.floor((Math.random()*90))+10)*0.01);
 }
 console.log(states);
 
