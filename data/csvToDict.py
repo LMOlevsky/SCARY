@@ -66,6 +66,8 @@ def csvToDictCities(filename):
 
             #add numbers as integers
             try:
+                if(data == ""):
+                    data = 0
                 subdict[titles[position]] = int(data)
             except:
                 subdict[titles[position]] = data
