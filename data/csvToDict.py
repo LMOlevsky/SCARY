@@ -102,7 +102,7 @@ except:
 
 #to create a csv to use for the database
 def writeData(d):
-    with open('allCities.csv', 'wb') as f:  # Just use 'w' mode in 3.x
+    with open('cities.csv', 'wb') as f:  # Just use 'w' mode in 3.x
         w = csv.writer(f)
         w.writerow(d['NEW YORK'].keys())
         for key in d:
