@@ -1,14 +1,14 @@
 import sqlite3
 import csv
 
-f="cities.db"
+f="./data/cities.db"
 db = sqlite3.connect(f)
 c = db.cursor()
 
 def populate(file):
     reader = csv.reader(open(file,'rU'))
     #get the table name
-    name = file.split('.csv')[0]
+    name = file.split('.csv')[0].split('/')[2]
     #get the table fields
     row = next(reader)
     #print row
@@ -56,7 +56,7 @@ def populate(file):
         #print command
         c.execute(command)
 
-populate("cities.csv")
+populate("./data/cities.csv")
 
 db.commit()
 db.close()
