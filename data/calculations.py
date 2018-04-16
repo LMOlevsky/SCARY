@@ -2,7 +2,7 @@ import sqlite3
 import csv
 import dbBuilder
 
-f="data/cities.db"
+f="./data/cities.db"
 db = sqlite3.connect(f)
 c = db.cursor()
 

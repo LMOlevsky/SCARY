@@ -1,6 +1,6 @@
 from flask import Flask, flash, render_template, request, redirect, url_for
-import sqlite3
 from data import calculations
+import sqlite3
 app = Flask(__name__)
 
 @app.route('/')
