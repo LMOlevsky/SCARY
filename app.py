@@ -8,7 +8,6 @@ def root():
     db = dbBuilder.openDB()
     cursor = dbBuilder.createCursor(db)
     crime = calculations.percentages('Murder',cursor)
-    print crime
     dbBuilder.closeDB(db)
     return render_template('testmap.html', crime = crime)
 
