@@ -1,11 +1,15 @@
 import sqlite3
 import csv
 
-f="./data/cities.db"
-db = sqlite3.connect(f)
-c = db.cursor()
+def openDB():
+    db = sqlite3.connect("./data/cities.db", check_same_thread=False)
+    return db
 
-def populate(file):
+def createCursor(db):
+    c = db.cursor()
+    return c
+
+def populate(file,c):
     reader = csv.reader(open(file,'rU'))
     #get the table name
     name = file.split('.csv')[0].split('/')[2]
@@ -56,7 +60,11 @@ def populate(file):
         #print command
         c.execute(command)
 
-populate("./data/cities.csv")
+def closeDB(db):
+    db.commit()
+    db.close()
 
-db.commit()
-db.close()
+db = openDB()
+c = createCursor(db)
+populate("./data/cities.csv",c)
+closeDB(db)
