@@ -1,7 +1,23 @@
 var svg = d3.select("svg");
 var path = d3.geoPath();
 
-
+var color = function(tag){
+    if (tag == "murder"){
+	return "rgba(255,0,0,";
+    }
+    if (tag == "arson"){
+	return "rgba(0,255,0,";
+    }
+    if (tag == "rape"){
+	return "rgba(0,0,255,";
+    }
+    if (tag == "moto_theft"){
+	return "rgba(255,0,255,";
+    }
+    if (tag == "prop"){
+	return "rgba(255,255,0,";
+    }
+};
 
 //==================================================
 //Configuring transparencies
@@ -55,7 +71,7 @@ var needs_work = function(tag) {
 	//the state's color is set using their index
 	d3.selectAll("path")
 	    .style("fill", function(d, i) {
-		return "rgba(255,0,0,"+ states[i] +")" ;
+		return "rgba(0,0,255," + states[i] +")" ;
 	    })
 	    .on('mouseover', function(d, i) {
 		hovering(i, states);
@@ -88,7 +104,7 @@ var hovering = function(state, states) {
 		//if it's negative; it means theres nothing there
 		return "blue";
 	    } else {
-		return "rgba(255,0,0,"+ states[i] +")";
+		return  color(tag) + states[i] +")";
 	    }
 	});
 
@@ -96,4 +112,4 @@ var hovering = function(state, states) {
 
 
 
-needs_work("murder");
+needs_work("rape");
