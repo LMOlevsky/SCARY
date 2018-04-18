@@ -3,7 +3,7 @@ var path = d3.geoPath();
 
 //POSSIBILITIES: ["Murder","Arson","Violent crime","Motor vehicle theft","Property crime","Aggravated assault","Robbery","Burglary","Larceny theft","Rape"]
 
-var types=[]
+var types=["Murder"]
 function update(){
     checkbox=document.getElementById("showProp")
     if(checkbox.checked==true){
@@ -166,10 +166,14 @@ if (!String.prototype.isInList) {
 */
 
 //var coords=[[100,500,100,200],[200,500,150,200]]
+
+/*
 var stateCoor=[]
 for(i=0;i<50;i++){
     stateCoor.push([100+i*25,500])
 }
+*/
+var stateCoor=[[530,400],[70,350],[600,300],[410,320],[590,450],[700,270],[410,500],[640,450],[520,240],[540,490]]
 //var stateCoor=[[100,500],[200,500]]
 //var coords=[[100,500,100,"Murder"],[111,500,200,"arson"],[200,500,150,"Murder"],[211,500,200,"Arson"]]
 
@@ -177,7 +181,7 @@ numSelected=types.length
 var coords=[]
 
 for(j=0;j<numSelected;j++){
-    for(i=0;i<50;i++){
+    for(i=0;i<10;i++){
 	temp=[]
 	temp.push(stateCoor[i][0]+j*11)
 	temp.push(stateCoor[i][1])
