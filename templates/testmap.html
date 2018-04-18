@@ -81,21 +81,23 @@
     <input id="showArson" type="checkbox">arson<br>
     <input id="showRape" type="checkbox">rape <br>
     <input id="showMoto_theft" type="checkbox">moto theft <br>
-    <input id="showProp" type="checkbox">prop<br>
+    <input id="showProp" type="checkbox" onclick="update()">prop<br>
 
     <p id="murder" hidden="true">{{ murder }}</p>
     <p id="arson" hidden="true">{{ arson }}</p>
-    <p id="rape" hidden="true">{{ violent_crime }}</p>
+    <p id="rape" hidden="true">{{ rape }}</p>
     <p id="moto_theft" hidden="true">{{ moto_theft }}</p>
     <p id="prop" hidden="true">{{ prop }}</p>
 
     <p id="murder2" hidden="true">{{ murder2 }}</p>
     <p id="arson2" hidden="true">{{ arson2 }}</p>
-    <p id="rape2" hidden="true">{{ violent_crime2 }}</p>
+    <p id="rape2" hidden="true">{{ rape2 }}</p>
     <p id="moto_theft2" hidden="true">{{ moto_theft2 }}</p>
     <p id="prop2" hidden="true">{{ prop2 }}</p>
     <p id="violent2" hidden="true">{{ violent2 }}</p>
     <p id="assault2" hidden="true">{{ assault2 }}</p>
+    <p id="burglary2" hidden="true">{{ burglary2 }}</p>
+    <p id="larceny2" hidden="true">{{ larceny2 }}</p>
     <!--<div class="chart"><svg width="960" height="600"></svg>
 	</div>-->
     <svg width="960" height="600" class="chart"></svg>

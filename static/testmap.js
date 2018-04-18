@@ -3,9 +3,20 @@ var path = d3.geoPath();
 
 //POSSIBILITIES: ["Murder","Arson","Violent crime","Motor vehicle theft","Property crime","Aggravated assault","Robbery","Burglary","Larceny theft","Rape"]
 
-var types=["Murder"]
+var types=[]
+function update(){
+    checkbox=document.getElementById("showProp")
+    if(checkbox.checked==true){
+    //if(document.getElementById("showProp").checked){
+	types.push("PropertyCrime")
+	alert("hi")
+    }
+}
+
+//var types=["Arson","Rape"]
+//var coords=[[100,100],[200,200]];
+
 /*
-var coords=[[100,100],[200,200]];
 var circles=svg.selectAll("circle").data(coords).enter();
 circles.append("circle")
 circles
@@ -13,6 +24,7 @@ circles
     .attr("cy", function(d){return d[1];})
     .attr("r", function(d){return 100;})
 */
+
 var color = function(tag){
     if (tag == "murder"){
 	return "rgba(255,0,0,";
@@ -55,10 +67,22 @@ var alphas = function(tag) {
     }
     return states;
 }
+
+var numC = function(tag) {
+    var states = [];
+    var data = document.getElementById(tag).innerHTML;
+    data = data.replace(/[[\]]/g,'')
+    //data=data.match(/\S+/g)
+    data=data.split(",")
+    for (var i = 0; i < 50; i++) {
+	states.push(data[i])
+    }
+    return states;
+}
 //create the state list
 //alphas('murder');
 
-var m=alphas('arson2');
+var m=numC('arson2');
 console.log(m)
 
 
@@ -129,11 +153,93 @@ var hovering = function(state, states) {
 
 needs_work("moto_theft");
 
+/*
+if (!String.prototype.isInList) {
+   String.prototype.isInList = function() {
+      let value = this.valueOf();
+      for (let i = 0, l = arguments.length; i < l; i += 1) {
+         if (arguments[i] === value) return true;
+      }
+      return false;
+   }
+}
+*/
 
 //var coords=[[100,500,100,200],[200,500,150,200]]
-var stateCoor=[[100,500],[200,500]]
-var coords=[[100,500,100,"murder"],[111,500,200,"arson"],[200,500,150,"murder"],[211,500,200,"arson"]]
+var stateCoor=[]
+for(i=0;i<50;i++){
+    stateCoor.push([100+i*25,500])
+}
+//var stateCoor=[[100,500],[200,500]]
+//var coords=[[100,500,100,"Murder"],[111,500,200,"arson"],[200,500,150,"Murder"],[211,500,200,"Arson"]]
 
+numSelected=types.length
+var coords=[]
+
+for(j=0;j<numSelected;j++){
+    for(i=0;i<50;i++){
+	temp=[]
+	temp.push(stateCoor[i][0]+j*11)
+	temp.push(stateCoor[i][1])
+	text=""
+	divide=1
+	if(types[j]=="Murder"){
+	    text="murder2"
+	    text2="Murder"
+	    divide=2
+	}
+	else if(types[j]=="Arson"){
+	    text="arson2"
+	    text2="Arson"
+	}
+	else if(types[j]=="Rape"){
+	    text="rape2"
+	    text2="Rape"
+	    divide=3
+	}
+	else if(types[j]=="MotorVehicleTheft"){
+	    text="moto_theft2"
+	    text2="Motor Vehicle Theft"
+	    divide=10
+	}
+	else if(types[j]=="PropertyCrime"){
+	    text="prop2"
+	    text2="Property Crime"
+	    divide=100
+	}
+	else if(types[j]=="ViolentCrime"){
+	    text="violent2"
+	    text2="Violent Crime"
+	    divide=10
+	}
+	else if(types[j]=="AggravatedAssault"){
+	    text="assault2"
+	    text2="Aggravated Assault"
+	    divide=10
+	}
+	else if(types[j]=="Burglary"){
+	    text="burglary2"
+	    text2="Burglary"
+	    divide=20
+	}
+	else if(types[j]=="Larceny"){
+	    text="larceny2"
+	    text2="Larceny Theft"
+	    divide=10
+	}
+	m=numC(text)
+	//temp.push(m[i])
+	if(m[i]==-1){
+	    temp.push(1)
+	}
+	else{
+	    temp.push(m[i]/divide)
+	}
+	//console.log(m[i])
+	temp.push(text2)
+	coords.push(temp)
+    }
+}
 
 //IDEA: when user selects say 2 types of crimes, we need to append [xcor,ycor,heightOfBar,typeOfCrimeSelected] to "coords list"
 //for each state, check how many lists in "coords" already have those x and y cors and then generate updated xcor (+i*11) for this current bar
@@ -180,8 +286,26 @@ var barUpdate = bar.data(coords);
 
 var tip = d3.tip()
   .attr('class', 'd3-tip')
-  .html(function(d) {
-    return "<strong>"+d[3]+": </strong> <span style='color:red'>" + d[2] + "</span>";
+    .html(function(d) {
+	if(d[3]=="Property Crime"){
+	    text=(parseInt(d[2])*100)+""
+	}
+	else if(d[3]=="Arson"){
+	    text=d[2]
+	}
+	else if(d[3]=="Rape"){
+	    text=(parseInt(d[2])*3)+""
+	}
+	else if(d[3]=="Murder"){
+	    text=(parseInt(d[2])*2)+""
+	}
+	else if(d[3]=="Burglary"){
+	    text=(parseInt(d[2])*20)+""
+	}
+	else{
+	    text=(parseInt(d[2])*10)+""
+	}
+    return "<strong>"+d[3]+": </strong> <span style='color:red'>" + text + "</span>";
   })
 
 svg.call(tip);
