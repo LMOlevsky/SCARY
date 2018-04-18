@@ -31,51 +31,57 @@
       }
 
       .bar {
-  fill: orange;
-}
+      fill: orange;
+      }
 
-.bar:hover {
-  fill: orangered ;
-}
+      .bar:hover {
+      fill: orangered ;
+      }
 
       .d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
+      line-height: 1;
+      font-weight: bold;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      border-radius: 2px;
+      }
+      .axis path,
+      .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+      }
+      /* Creates a small triangle extender for the tooltip */
+      .d3-tip:after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.8);
+      content: "\25BC";
+      position: absolute;
+      text-align: center;
+      }
 
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
+      /* Style northward tooltips differently */
+      .d3-tip.n:after {
+      margin: -1px 0 0 0;
+      top: 100%;
+      left: 0;
     </style>
   </head>
   <body>
 
     <h1>Comparing crime rates by type in cities across the us</h1>
     <h5>temp?</h5>
+
+    <input id="showMurder" type="checkbox">murder<br>
+    <input id="showArson" type="checkbox">arson<br>
+    <input id="showRape" type="checkbox">rape <br>
+    <input id="showMoto_theft" type="checkbox">moto theft <br>
+    <input id="showProp" type="checkbox">prop<br>
 
     <p id="murder" hidden="true">{{ murder }}</p>
     <p id="arson" hidden="true">{{ arson }}</p>
@@ -84,7 +90,7 @@
     <p id="prop" hidden="true">{{ prop }}</p>
     
     <!--<div class="chart"><svg width="960" height="600"></svg>
-     </div>-->
+	</div>-->
     <svg width="960" height="600" class="chart"></svg>
 
     <script src="https://d3js.org/d3.v4.min.js"></script>
