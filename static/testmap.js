@@ -58,7 +58,7 @@ var alphas = function(tag) {
 //create the state list
 //alphas('murder');
 
-var m=alphas('murder');
+var m=alphas('arson2');
 console.log(m)
 
 

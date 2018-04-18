@@ -24,7 +24,7 @@ def root():
     return render_template('testmap.html',
                            murder=murder, arson=arson,
                            rape=rape, moto_theft=moto_theft, prop=prop, murder2=murder2, arson2=arson2,
-                           rape2=rape2, moto_theft2=moto_theft2, prop2=prop2
+                           rape2=rape2, moto_theft2=moto_theft2, prop2=prop2, violent2=violent2, assault2=assault2
     )
 
 if __name__ == "__main__":
