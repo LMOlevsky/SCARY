@@ -12,10 +12,19 @@ def root():
     rape = calculations.percentages('Rape',cursor)
     moto_theft = calculations.percentages('Motor vehicle theft',cursor)
     prop = calculations.percentages('Property crime',cursor)
+     ##
+    murder2 = calculations.crimeCount('Murder',cursor)
+    arson2 = calculations.crimeCount('Arson',cursor)
+    rape2 = calculations.crimeCount('Rape',cursor)
+    moto_theft2 = calculations.crimeCount('Motor vehicle theft',cursor)
+    prop2 = calculations.crimeCount('Property crime',cursor)
+    violent2 = calculations.crimeCount('Violent crime',cursor)
+    assault2=calculations.crimeCount('Aggravated assault',cursor)
     dbBuilder.closeDB(db)
     return render_template('testmap.html',
                            murder=murder, arson=arson,
-                           rape=rape, moto_theft=moto_theft, prop=prop
+                           rape=rape, moto_theft=moto_theft, prop=prop, murder2=murder2, arson2=arson2,
+                           rape2=rape2, moto_theft2=moto_theft2, prop2=prop2
     )
 
 if __name__ == "__main__":

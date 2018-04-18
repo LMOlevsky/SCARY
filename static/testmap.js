@@ -1,7 +1,18 @@
 var svg = d3.select("svg");
 var path = d3.geoPath();
 
+//POSSIBILITIES: ["Murder","Arson","Violent crime","Motor vehicle theft","Property crime","Aggravated assault","Robbery","Burglary","Larceny theft","Rape"]
 
+var types=["Murder"]
+/*
+var coords=[[100,100],[200,200]];
+var circles=svg.selectAll("circle").data(coords).enter();
+circles.append("circle")
+circles
+    .attr("cx", function(d){ return d[0];})
+    .attr("cy", function(d){return d[1];})
+    .attr("r", function(d){return 100;})
+*/
 var color = function(tag){
     if (tag == "murder"){
 	return "rgba(255,0,0,";
@@ -47,7 +58,8 @@ var alphas = function(tag) {
 //create the state list
 //alphas('murder');
 
-
+var m=alphas('murder');
+console.log(m)
 
 
 //==================================================
