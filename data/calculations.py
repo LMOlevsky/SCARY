@@ -5,21 +5,23 @@ import dbBuilder
 #helper function to compare the rates of crime in each city for each state
 def compareRates(id,typeNum,c):
     highest = -1
+    highestCrime = -1
     for entry in c.execute("SELECT * FROM cities WHERE ID = %d"%(id)):
         crimes = entry[typeNum]
         pop = entry[14]
         percent = float(crimes)/pop
         if(percent > highest):
             highest = percent
-    return highest
+            highestCrime = crimes
+    return highestCrime
 
 #type is a string of the type of crime (types can be found in the types list
 # in the function below), and c is the cursor
-#returns a list of the highest percentages of a certain type of crime
+#returns a list of the highest number of a certain type of crime
 # in a state,
 # where each index is the id of that state
 #if there are no cities for a certain state, that index will have -1
-def percentages(type,c):
+def crimeCount(type,c):
     ans = []
     types = ["City","Murder","Arson","Violent crime","Motor vehicle theft","State","Property crime","Aggravated assault","Robbery","Year","Burglary","Larceny theft","ID","Rape","Population"]
     typeNum = types.index(type)
@@ -59,12 +61,12 @@ if __name__ == "__main__":
     db = dbBuilder.openDB()
     c = dbBuilder.createCursor(db)
     
-    murder = percentages('Murder',c)
+    murder = crimeCount('Murder',c)
     murderCities = dangerousCities('Murder',c)
     print murder
     print murderCities
 
-    arson = percentages('Arson',c)
+    arson = crimeCount('Arson',c)
     arsonCities = dangerousCities('Arson',c)
     print arson
     print arsonCities
