@@ -173,15 +173,17 @@ for(i=0;i<50;i++){
     stateCoor.push([100+i*25,500])
 }
 */
-var stateCoor=[[530,400],[70,350],[600,300],[410,320],[590,450],[700,270],[410,500],[640,450],[520,240],[540,490],[500,180], [530,340],[400,260],[170,400],[270,320],[640,290],[660,210],[230,120],[780,190],[60,150],[760,320],[260,220],[790,350],[430,385],[610,370],[560,150],[80,530],[850,130],[380,110],[700,450],[900,100],[890,190]]
+
+//coordinate for states
+var stateCoor=[[530,400],[70,350],[600,300],[410,320],[590,450],[700,270],[410,500],[640,450],[520,240],[540,490],[500,180], [530,340],[400,260],[170,400],[270,320],[640,290],[660,210],[230,120],[780,190],[60,150],[760,320],[260,220],[790,350],[430,385],[610,370],[560,150],[80,530],[850,130],[380,110],[700,450],[900,100],[890,190],[730,290]]
 //var stateCoor=[[100,500],[200,500]]
 //var coords=[[100,500,100,"Murder"],[111,500,200,"arson"],[200,500,150,"Murder"],[211,500,200,"Arson"]]
 
-numSelected=types.length
-var coords=[]
+numSelected=types.length //how many types of crimes user checked off 
+var coords=[] //append values to this list based on the types of crime user checks off.  each element in coords is a list of the form [xcor, ycor, height (may be divided so it fits on screen), typeOfCrime (necessary for label)]
 
 for(j=0;j<numSelected;j++){
-    for(i=0;i<32;i++){
+    for(i=0;i<33;i++){
 	temp=[]
 	temp.push(stateCoor[i][0]+j*11)
 	temp.push(stateCoor[i][1])
@@ -288,6 +290,8 @@ var chart = d3.select(".chart").attr("width",960).attr("height",600);
 var bar = chart.selectAll("rect");
 var barUpdate = bar.data(coords);
 
+//Adds label to bars
+//To make sure bars fit on the screen, actual numbers were divided by certain numbers like 10 (e.g. 5000 burglaries -> 500.  In that case, height of bar would be 500.  The "text" of the label needs the actual crime numbers, so we multiply the data (height) back
 var tip = d3.tip()
   .attr('class', 'd3-tip')
     .html(function(d) {
@@ -309,7 +313,7 @@ var tip = d3.tip()
 	else{
 	    text=(parseInt(d[2])*10)+""
 	}
-    return "<strong>"+d[3]+": </strong> <span style='color:red'>" + text + "</span>";
+    return "<strong>"+d[3]+": </strong> <span style='color:red'>" + text + "</span>"; //d[3] refers to the type of crime (e.g. "Murder") while text refers to the actual number of crimes
   })
 
 svg.call(tip);
