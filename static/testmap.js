@@ -91,6 +91,17 @@ console.log(m)
 var back = svg.append("g"); // appended first
 var front = svg.append("g");
 
+function getCentroid(selection) {
+    // get the DOM element from a D3 selection
+    // you could also use "this" inside .each()
+    var element = selection.node(),
+        // use the native SVG interface to get the bounding box
+        bbox = element.getBBox();
+    // return the center of the bounding box
+    return [bbox.x + bbox.width/2, bbox.y + bbox.height/2];
+}
+
+
 var needs_work = function(tag) {
 
     var states=alphas(tag);
@@ -98,44 +109,58 @@ var needs_work = function(tag) {
     d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
 	if (error) throw error;
 
-	//create states and apply states attrs
-	//svg.append("g")
-	back
-	    .attr("class", "states")
-	    .selectAll("path")
-	//binded data has data for each state; each index corresponds to a state
-	    .data(topojson.feature(us, us.objects.states).features)
-	    .enter().append("path")
-	    .attr("d", path);
+	var g = back;
 
-	//set their colors when the mouse hovers over
-	//the state's color is set using their index
+	g.append("g")
+            .attr("class", "states")
+	    .selectAll("path")
+            .data(topojson.feature(us, us.objects.states).features)
+	    .enter()
+            .append("g")
+            .attr("class","state-path")
+            .attr("state", function(d) {
+		return d.state;
+            });
+	
+	svg.selectAll('.state-path')
+            .append("path")
+            .attr("d", path)
+            .attr("centroid", function(d) {
+		var centroid = path.centroid(d);
+		console.log(centroid);
+            });
+
+	g.append("path")
+            .data(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+            .attr("id", "state-borders")
+            .attr("d", path);
+
 	d3.selectAll("path")
 	    .style("fill", function(d, i) {
 		return color(tag) + states[i] +")" ;
 	    })
 	    .on('mouseover', function(d, i) {
-		hovering(i, states);
+		console.log("What");
+		console.log(d);
+		hovering(i, states, tag);
 	    })
 	    .on('mouseout', function() {
-		hovering(-1, states);
+		hovering(-1, states, tag);
 	    });
 
-	//apply state borders attributes
-	svg.append("path")
-	    .attr("class", "state-borders")
-	    .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+	
 
 
     });
 };
 
 
+
 //==================================================
 //Hovering business
 
 //function for hovering to set exactly that state a certain color
-var hovering = function(state, states) {
+var hovering = function(state, states, tag) {
     d3.selectAll("path")
 	.style("fill", function(d, i) {
 	    if (i == state) {
@@ -143,7 +168,7 @@ var hovering = function(state, states) {
 		console.log(perc_range(states[i]));
 		//create bars (maybe consider them rising just wherever your mouse is; would be easier
 		//if it's negative; it means theres nothing there
-		return "red";
+		return "black";
 	    } else {
 		return color(tag) + states[i] +")";
 	    }
@@ -151,7 +176,7 @@ var hovering = function(state, states) {
 
 };
 
-needs_work("moto_theft");
+needs_work("murder");
 
 /*
 if (!String.prototype.isInList) {
@@ -272,16 +297,6 @@ circles.append("circle").attr("cx",function(d){return d[0];})
     .attr("cy",function(d){return d[1];})
     .attr("r",function(d){return 5;})
     .style("fill",function(d){return "blue";});
-
-function getCentroid(selection) {
-    // get the DOM element from a D3 selection
-    // you could also use "this" inside .each()
-    var element = selection.node(),
-        // use the native SVG interface to get the bounding box
-        bbox = element.getBBox();
-    // return the center of the bounding box
-    return [bbox.x + bbox.width/2, bbox.y + bbox.height/2];
-}
 
 //console.log(getCentroid(svg.selectAll("path")));
 //console.log(svg.selectAll("path"));
