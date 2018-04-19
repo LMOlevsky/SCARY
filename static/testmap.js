@@ -13,18 +13,6 @@ function update(){
     }
 }
 
-//var types=["Arson","Rape"]
-//var coords=[[100,100],[200,200]];
-
-/*
-var circles=svg.selectAll("circle").data(coords).enter();
-circles.append("circle")
-circles
-    .attr("cx", function(d){ return d[0];})
-    .attr("cy", function(d){return d[1];})
-    .attr("r", function(d){return 100;})
-*/
-
 var color = function(tag){
     if (tag == "murder"){
 	return "rgba(255,0,0,";
@@ -102,7 +90,8 @@ function getCentroid(selection) {
 }
 
 
-var needs_work = function(tag) {
+var needs_work = function(tag, callback) {
+
 
     var states=alphas(tag);
 
@@ -125,9 +114,8 @@ var needs_work = function(tag) {
 	svg.selectAll('.state-path')
             .append("path")
             .attr("d", path)
-            .attr("centroid", function(d) {
+            .attr("centroid", function(d, i) {
 		var centroid = path.centroid(d);
-		console.log(centroid);
             });
 
 	g.append("path")
@@ -140,8 +128,8 @@ var needs_work = function(tag) {
 		return color(tag) + states[i] +")" ;
 	    })
 	    .on('mouseover', function(d, i) {
-		console.log("What");
-		console.log(d);
+//		console.log("What");
+//		console.log(d);
 		hovering(i, states, tag);
 	    })
 	    .on('mouseout', function() {
@@ -152,15 +140,16 @@ var needs_work = function(tag) {
 
 
     });
+    callback();
+
 };
-
-
 
 //==================================================
 //Hovering business
 
 //function for hovering to set exactly that state a certain color
 var hovering = function(state, states, tag) {
+
     d3.selectAll("path")
 	.style("fill", function(d, i) {
 	    if (i == state) {
@@ -176,102 +165,129 @@ var hovering = function(state, states, tag) {
 
 };
 
-needs_work("murder");
+//needs_work("murder");
+var stateCoors =[[554.9820493311587, 384.6340056909818],
+		 [80.82258312576948, 283.40167845343757],
+		 [605.5763832710608, 265.66623033740524],
+		 [449.1730262150776, 304.19757566749564],
+		 [608.5724003479579, 430.5058530941247],
+		 [712.6873765706466, 248.7517063896311],
+		 [427.38996674052504, 461.72137863589705],
+		 [661.2989606456629, 425.24010249738404],
+		 [531.5840559002303, 223.46911250901823],
+		 [567.4194512748293, 470.7758518227551],
+		 [516.5946653249242, 129.6414015896711],
+		 [551.7866256428767, 306.6374343984268],
+		 [427.3878540702531, 234.86498780130137],
+		 [204.82509225786282, 376.1956676070532],
+		 [326.45245404671317, 285.1175806413173],
+		 [655.1309047705755, 264.6912334156099],
+		 [659.2381728731771, 164.2050159543356],
+		 [282.51861048889253, 97.84955423272905],
+		 [821.0483874311232, 168.85705199139625],
+		 [101.04986267322434, 131.70723811769813],
+		 [790.1958748968983, 299.4572677108202],
+		 [303.1196645277344, 191.96194785876492],
+		 [788.6451313495172, 344.85361485855384],
+		 [463.4685502305517, 369.98958043796404],
+		 [663.1906107071137, 355.3419995607502],
+		 [585.573902034637, 163.7758248372078],
+		 [100.87677335205404, 514.8161067939221],
+		 [859.8485575029607, 133.62590954714943],
+		 [422.4987986530495, 102.22408188477799],
+		 [724.6900955022221, 421.08405926136544],
+		 [904.8901409133521, 91.86682235977892],
+		 [890.783475076746, 181.18284880525738],
+		 [754.8872268789042, 279.9511484889455],
+		 [195.69641319595496, 144.04932750429586],
+		 [423.130656806072, 169.3620783670036],
+		 [305.79809621840445, 386.95742730333643],
+		 [122.30239154218933, 57.68528887763333],
+		 [793.3713505198033, 221.84576222657273],
+		 [755.7455589627274, 507.77862074199203],
+		 [223.2502814234199, 264.31946020337864],
+		 [677.655116118911, 315.7724926729923],
+		 [878.895001668018, 137.77025897772197],
+		 [767.2927002325082, 386.0424383160666],
+		 [139.96003190313502, 247.69480087851903],
+		 [294.8045564922889, 563.9882785155545],
+		 [848.2752124691982, 226.3400237317859],
+		 [872.259991483655, 187.21492246865907], 
+		 [818.8052621621626, 259.14984417158763],
+		 [883.6611759972714, 169.60417446521842],
+		 [840.2066179677938, 255.63732126174412],
+		 [815.0734400501556, 262.9217279337418]];
 
-/*
-if (!String.prototype.isInList) {
-   String.prototype.isInList = function() {
-      let value = this.valueOf();
-      for (let i = 0, l = arguments.length; i < l; i += 1) {
-         if (arguments[i] === value) return true;
-      }
-      return false;
-   }
-}
-*/
+var make_bars = function() {
 
-//var coords=[[100,500,100,200],[200,500,150,200]]
+    
+    numSelected=types.length //how many types of crimes user checked off 
+    var coords=[] //append values to this list based on the types of crime user checks off.  each element in coords is a list of the form [xcor, ycor, height (may be divided so it fits on screen), typeOfCrime (necessary for label)]
 
-/*
-var stateCoor=[]
-for(i=0;i<50;i++){
-    stateCoor.push([100+i*25,500])
-}
-*/
-
-//coordinate for states
-var stateCoor=[[530,400],[70,350],[600,300],[410,320],[590,450],[700,270],[410,500],[640,450],[520,240],[540,490],[500,180], [530,340],[400,260],[170,400],[270,320],[640,290],[660,210],[230,120],[780,190],[60,150],[760,320],[260,220],[790,350],[430,385],[610,370],[560,150],[80,530],[850,130],[380,110],[700,450],[900,100],[890,190],[730,290]]
-//var stateCoor=[[100,500],[200,500]]
-//var coords=[[100,500,100,"Murder"],[111,500,200,"arson"],[200,500,150,"Murder"],[211,500,200,"Arson"]]
-
-numSelected=types.length //how many types of crimes user checked off 
-var coords=[] //append values to this list based on the types of crime user checks off.  each element in coords is a list of the form [xcor, ycor, height (may be divided so it fits on screen), typeOfCrime (necessary for label)]
-
-for(j=0;j<numSelected;j++){
-    for(i=0;i<33;i++){
-	temp=[]
-	temp.push(stateCoor[i][0]+j*11)
-	temp.push(stateCoor[i][1])
-	text=""
-	divide=1
-	if(types[j]=="Murder"){
-	    text="murder2"
-	    text2="Murder"
-	    divide=2
+    for(j=0;j<numSelected;j++){
+	for(i=0;i<33;i++){
+	    temp=[];
+	    temp.push(stateCoors[i][0]+j*11);
+	    temp.push(stateCoors[i][1]);
+	    text="";
+	    divide=1;
+	    if(types[j]=="Murder"){
+		text="murder2";
+		text2="Murder";
+		divide=2;
+	    }
+	    else if(types[j]=="Arson"){
+		text="arson2";
+		text2="Arson";
+	    }
+	    else if(types[j]=="Rape"){
+		text="rape2";
+		text2="Rape";
+		divide=3;
+	    }
+	    else if(types[j]=="MotorVehicleTheft"){
+		text="moto_theft2";
+		text2="Motor Vehicle Theft";
+		divide=10;
+	    }
+	    else if(types[j]=="PropertyCrime"){
+		text="prop2";
+		text2="Property Crime";
+		divide=100;
+	    }
+	    else if(types[j]=="ViolentCrime"){
+		text="violent2";
+		text2="Violent Crime";
+		divide=10;
+	    }
+	    else if(types[j]=="AggravatedAssault"){
+		text="assault2";
+		text2="Aggravated Assault";
+		divide=10;
+	    }
+	    else if(types[j]=="Burglary"){
+		text="burglary2";
+		text2="Burglary";
+		divide=20;
+	    }
+	    else if(types[j]=="Larceny"){
+		text="larceny2";
+		text2="Larceny Theft";
+		divide=10;
+	    }
+	    m=numC(text);
+	    //temp.push(m[i])
+	    if(m[i]==-1){
+		temp.push(1);
+	    }
+	    else{
+		temp.push(m[i]/divide);
+	    }
+	    //console.log(m[i])
+	    temp.push(text2);
+	    coords.push(temp);
 	}
-	else if(types[j]=="Arson"){
-	    text="arson2"
-	    text2="Arson"
-	}
-	else if(types[j]=="Rape"){
-	    text="rape2"
-	    text2="Rape"
-	    divide=3
-	}
-	else if(types[j]=="MotorVehicleTheft"){
-	    text="moto_theft2"
-	    text2="Motor Vehicle Theft"
-	    divide=10
-	}
-	else if(types[j]=="PropertyCrime"){
-	    text="prop2"
-	    text2="Property Crime"
-	    divide=100
-	}
-	else if(types[j]=="ViolentCrime"){
-	    text="violent2"
-	    text2="Violent Crime"
-	    divide=10
-	}
-	else if(types[j]=="AggravatedAssault"){
-	    text="assault2"
-	    text2="Aggravated Assault"
-	    divide=10
-	}
-	else if(types[j]=="Burglary"){
-	    text="burglary2"
-	    text2="Burglary"
-	    divide=20
-	}
-	else if(types[j]=="Larceny"){
-	    text="larceny2"
-	    text2="Larceny Theft"
-	    divide=10
-	}
-	m=numC(text)
-	//temp.push(m[i])
-	if(m[i]==-1){
-	    temp.push(1)
-	}
-	else{
-	    temp.push(m[i]/divide)
-	}
-	//console.log(m[i])
-	temp.push(text2)
-	coords.push(temp)
     }
-}
-
 //IDEA: when user selects say 2 types of crimes, we need to append [xcor,ycor,heightOfBar,typeOfCrimeSelected] to "coords list"
 //for each state, check how many lists in "coords" already have those x and y cors and then generate updated xcor (+i*11) for this current bar
 
@@ -290,6 +306,10 @@ function howManyTimes(state){
 //e.g. howManyTimes(0) is for Arkansas
 */
 
+//======================================================================
+
+/*             DON"T KNOW WHAT THIS IS FOR BUT COMMENTED 
+
 
 //var circles=svg.append("g").selectAll("circle").data(coords).enter()
 var circles=front.selectAll("circle").data(coords).enter()
@@ -297,6 +317,8 @@ circles.append("circle").attr("cx",function(d){return d[0];})
     .attr("cy",function(d){return d[1];})
     .attr("r",function(d){return 5;})
     .style("fill",function(d){return "blue";});
+*/
+//======================================================================
 
 //console.log(getCentroid(svg.selectAll("path")));
 //console.log(svg.selectAll("path"));
@@ -366,5 +388,11 @@ barEnter.attr("height", function(d) {return d[2]; })
     //.on('mouseover', tip.show)
 	.on('mouseover', tip.show)
 	.on('mouseout', tip.hide);
+}
 
-//needs_work("murder");
+
+
+
+
+needs_work("murder", make_bars);
+
