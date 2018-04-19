@@ -3,7 +3,7 @@ var path = d3.geoPath();
 
 //POSSIBILITIES: ["Murder","Arson","Violent crime","Motor vehicle theft","Property crime","Aggravated assault","Robbery","Burglary","Larceny theft","Rape"]
 
-var types=["Murder"]
+//var types=["Murder"]
 function update(){
     checkbox=document.getElementById("showProp")
     if(checkbox.checked==true){
@@ -70,8 +70,8 @@ var numC = function(tag) {
 //create the state list
 //alphas('murder');
 
-var m=numC('arson2');
-console.log(m)
+//var m=numC('arson2');
+//console.log(m)
 
 
 //==================================================
@@ -90,7 +90,7 @@ function getCentroid(selection) {
 }
 
 
-var needs_work = function(tag, callback) {
+var needs_work = function(tag) {
 
 
     var states=alphas(tag);
@@ -140,7 +140,7 @@ var needs_work = function(tag, callback) {
 
 
     });
-    callback();
+    //callback();
 
 };
 
@@ -218,11 +218,11 @@ var stateCoors =[[554.9820493311587, 384.6340056909818],
 		 [840.2066179677938, 255.63732126174412],
 		 [815.0734400501556, 262.9217279337418]];
 
-var make_bars = function() {
+var make_bars = function(listTypes) {
 
     
-    numSelected=types.length //how many types of crimes user checked off 
-    var coords=[] //append values to this list based on the types of crime user checks off.  each element in coords is a list of the form [xcor, ycor, height (may be divided so it fits on screen), typeOfCrime (necessary for label)]
+    numSelected=listTypes.length //how many types of crimes user checked off 
+    //var coords=[] //append values to this list based on the types of crime user checks off.  each element in coords is a list of the form [xcor, ycor, height (may be divided so it fits on screen), typeOfCrime (necessary for label)]
 
     for(j=0;j<numSelected;j++){
 	for(i=0;i<50;i++){
@@ -280,8 +280,11 @@ var make_bars = function() {
 	    if(m[i]==-1){
 		temp.push(1);
 	    }
+	    else if(m[i]==0){
+		temp.push(1);
+	    }
 	    else{
-		temp.push(m[i]/divide);
+		temp.push(m[i]/divide+50);
 	    }
 	    //console.log(m[i])
 	    temp.push(text2);
@@ -289,6 +292,7 @@ var make_bars = function() {
 	    coords.push(temp);
 	}
     }
+}
 //IDEA: when user selects say 2 types of crimes, we need to append [xcor,ycor,heightOfBar,typeOfCrimeSelected] to "coords list"
 //for each state, check how many lists in "coords" already have those x and y cors and then generate updated xcor (+i*11) for this current bar
 
@@ -324,9 +328,9 @@ circles.append("circle").attr("cx",function(d){return d[0];})
 //console.log(getCentroid(svg.selectAll("path")));
 //console.log(svg.selectAll("path"));
 
-var chart = d3.select(".chart").attr("width",960).attr("height",600);
-var bar = chart.selectAll("rect");
-var barUpdate = bar.data(coords);
+//var chart = d3.select(".chart").attr("width",960).attr("height",600);
+//var bar = chart.selectAll("rect");
+//var barUpdate = bar.data(coords);
 
     
 //Adds label to bars
@@ -335,22 +339,22 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
     .html(function(d) {
 	if(d[3]=="Property Crime"){
-	    text=(parseInt(d[2])*100)+""
+	    text=((parseInt(d[2])-50)*100)+""
 	}
 	else if(d[3]=="Arson"){
 	    text=d[2]
 	}
 	else if(d[3]=="Rape"){
-	    text=(parseInt(d[2])*3)+""
+	    text=((parseInt(d[2])-50)*3)+""
 	}
 	else if(d[3]=="Murder"){
-	    text=(parseInt(d[2])*2)+""
+	    text=((parseInt(d[2])-50)*2)+""
 	}
 	else if(d[3]=="Burglary"){
-	    text=(parseInt(d[2])*20)+""
+	    text=((parseInt(d[2])-50)*20)+""
 	}
 	else{
-	    text=(parseInt(d[2])*10)+""
+	    text=((parseInt(d[2])-50)*10)+""
 	}
 	var statesList=document.getElementById("states").innerHTML
 	statesList= statesList.replace(/[[\]]/g,'')
@@ -363,7 +367,7 @@ var tip = d3.tip()
 	return "<strong>"+stateName.replace(/'/g, "")+"<br>"+d[3]+": </strong> <span style='color:red'>" + text + "</span>"; //d[3] refers to the type of crime (e.g. "Murder") while text refers to the actual number of crimes
   })
 
-svg.call(tip);
+//svg.call(tip);
 
 /*
 var times=coords[0].length-2
@@ -388,21 +392,34 @@ barEnter.style("height", function(d) {return d[2] + "px"; })
 }
 */
 
-var barEnter = barUpdate.enter().append("rect");
-barEnter.text(function(d) { return d; });
-barEnter.attr("height", function(d) {return d[2]; })
-	.attr("width", function(d){return 10;})
-	.attr("y",function(d){return d[1]-d[2];})
-	.attr("x",function(d){return d[0];})
-	.attr("class", "bar")
-    //.on('mouseover', tip.show)
-	.on('mouseover', tip.show)
-	.on('mouseout', tip.hide);
+var types=["Murder"]
+var coords=[]
+//var coords=[]
+
+var barsShow=function(){
+    //var types=["Murder"]
+    //var coords=[]
+    make_bars(types)
+    var chart = d3.select(".chart").attr("width",960).attr("height",600);
+    var bar = chart.selectAll("rect");
+    var barUpdate = bar.data(coords);
+    svg.call(tip);
+    var barEnter = barUpdate.enter().append("rect");
+    barEnter.text(function(d) { return d; });
+    barEnter.attr("height", function(d) {return d[2]; })
+	    .attr("width", function(d){return 10;})
+	    .attr("y",function(d){return d[1]-d[2];})
+	    .attr("x",function(d){return d[0];})
+	    .attr("class", "bar")
+	//.on('mouseover', tip.show)
+	    .on('mouseover', tip.show)
+	    .on('mouseout', tip.hide);
 }
 
 
 
 
 
-needs_work("murder", make_bars);
+needs_work("murder");
 
+//barsShow();
