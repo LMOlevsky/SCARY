@@ -31,27 +31,38 @@ var color = function(tag){
     }
 };
 
+var max = function(arr) {
+    var m = arr[0];
+    for (i = 0; i < arr.length; i++) {
+	if (arr[i] > m) {
+	    m = arr[i];
+	}
+	console.log(arr[i]);
+    }
+    console.log(m);
+    return m;
+}
 
 //==================================================
 //Configuring transparencies
 
 //scales the values from the db evenly from 0.05 to 0.9
-var alpha_range = d3.scaleLinear()
-    .domain([0, 0.0003])
-    .range([0.05, 0.9]);
-
-var perc_range = d3.scaleLinear()
-    .domain([0.05, 0.9])
-    .range([0, 0.0003]);
+var alpha_range = function(val, max) {
+    var alpha = d3.scaleLinear()
+	.domain([0, max])
+	.range([0.05, 0.9]);
+    return alpha(val);
+}
 
 //grabs appropriate list from html depending on tag and alters state, which affects
 var alphas = function(tag) {
     var states = [];
     var data = document.getElementById(tag).innerHTML;
     var stats = JSON.parse("["+data+"]")[0];
-    console.log(stats[0]);
+    var m = max(stats);
+    console.log(m);
     for (var i = 0; i < 50; i++) {
-	states.push(alpha_range(stats[i]));
+	states.push(alpha_range(stats[i], m));
     }
     return states;
 }
@@ -154,7 +165,6 @@ var hovering = function(state, states, tag) {
 	.style("fill", function(d, i) {
 	    if (i == state) {
 		//the percentage is in states[i]; undo the scale with perc_range
-		console.log(perc_range(states[i]));
 		//create bars (maybe consider them rising just wherever your mouse is; would be easier
 		//if it's negative; it means theres nothing there
 		return "black";
@@ -404,5 +414,5 @@ barEnter.attr("height", function(d) {return d[2]; })
 
 
 
-needs_work("murder", make_bars);
+needs_work("moto_theft", make_bars);
 
