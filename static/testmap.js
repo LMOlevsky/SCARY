@@ -1,9 +1,10 @@
 var svg = d3.select("svg");
 var path = d3.geoPath();
+var coords=[]
 
 //POSSIBILITIES: ["Murder","Arson","Violent crime","Motor vehicle theft","Property crime","Aggravated assault","Robbery","Burglary","Larceny theft","Rape"]
 
-//var types=["Murder"]
+var types=["Murder"]
 function update(){
     checkbox=document.getElementById("showProp")
     if(checkbox.checked==true){
@@ -103,7 +104,8 @@ function getCentroid(selection) {
 
 var needs_work = function(tag) {
 
-
+    make_bars(types)
+    svg.call(tip);
     var states=alphas(tag);
 
     d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
@@ -142,9 +144,12 @@ var needs_work = function(tag) {
 //		console.log("What");
 //		console.log(d);
 		hovering(i, states, tag);
+		barsShow(i)
 	    })
-	    .on('mouseout', function() {
+	    .on('mouseout', function(d,i) {
 		hovering(-1, states, tag);
+		//barsShow(i,false)
+		barHide()
 	    });
 
 	
@@ -288,10 +293,10 @@ var make_bars = function(listTypes) {
 	    m=numC(text);
 	    //temp.push(m[i])
 	    if(m[i]==-1){
-		temp.push(1);
+		temp.push(-1);
 	    }
 	    else if(m[i]==0){
-		temp.push(1);
+		temp.push(0);
 	    }
 	    else{
 		temp.push(m[i]/divide+50);
@@ -341,35 +346,46 @@ circles.append("circle").attr("cx",function(d){return d[0];})
 //var chart = d3.select(".chart").attr("width",960).attr("height",600);
 //var bar = chart.selectAll("rect");
 //var barUpdate = bar.data(coords);
-
+var statesList=document.getElementById("states").innerHTML
+statesList= statesList.replace(/[[\]]/g,'')
+    //data=data.match(/\S+/g)
+statesList=statesList.split(",")
     
 //Adds label to bars
 //To make sure bars fit on the screen, actual numbers were divided by certain numbers like 10 (e.g. 5000 burglaries -> 500.  In that case, height of bar would be 500.  The "text" of the label needs the actual crime numbers, so we multiply the data (height) back
 var tip = d3.tip()
   .attr('class', 'd3-tip')
     .html(function(d) {
-	if(d[3]=="Property Crime"){
-	    text=((parseInt(d[2])-50)*100)+""
+	if(parseInt(d[2])==0){
+	    text="0"
 	}
-	else if(d[3]=="Arson"){
-	    text=d[2]
-	}
-	else if(d[3]=="Rape"){
-	    text=((parseInt(d[2])-50)*3)+""
-	}
-	else if(d[3]=="Murder"){
-	    text=((parseInt(d[2])-50)*2)+""
-	}
-	else if(d[3]=="Burglary"){
-	    text=((parseInt(d[2])-50)*20)+""
+	else if(parseInt(d[2])==-1){
+	    text="-1"
 	}
 	else{
-	    text=((parseInt(d[2])-50)*10)+""
+	    if(d[3]=="Property Crime"){
+		text=((parseInt(d[2])-50)*100)+""
+	    }
+	    else if(d[3]=="Arson"){
+		text=d[2]
+	    }
+	    else if(d[3]=="Rape"){
+		text=((parseInt(d[2])-50)*3)+""
+	    }
+	    else if(d[3]=="Murder"){
+		text=((parseInt(d[2])-50)*2)+""
+	    }
+	    else if(d[3]=="Burglary"){
+		text=((parseInt(d[2])-50)*20)+""
+	    }
+	    else{
+		text=((parseInt(d[2])-50)*10)+""
+	    }
 	}
-	var statesList=document.getElementById("states").innerHTML
-	statesList= statesList.replace(/[[\]]/g,'')
+	//var statesList=document.getElementById("states").innerHTML
+	//statesList= statesList.replace(/[[\]]/g,'')
     //data=data.match(/\S+/g)
-	statesList=statesList.split(",")
+	//statesList=statesList.split(",")
 	//console.log(statesList)
 	ind=d[4]
 	stateName=statesList[ind]
@@ -402,38 +418,71 @@ barEnter.style("height", function(d) {return d[2] + "px"; })
 }
 */
 
-var types=["Murder"]
-var coords=[]
+//var types=["Murder"]
 //var coords=[]
+//var coords=[]
+var chart = d3.select(".chart").attr("width",960).attr("height",600);
+var bar = chart.selectAll("rect");
 
-var barsShow=function(){
+var barsShow=function(state){
     //var types=["Murder"]
     //var coords=[]
-    make_bars(types)
-    var chart = d3.select(".chart").attr("width",960).attr("height",600);
-    var bar = chart.selectAll("rect");
-    var barUpdate = bar.data(coords);
-    svg.call(tip);
+    var impCoords=[]
+    //make_bars(types)
+    numTimes=types.length
+    for(i=0;i<numTimes;i++){
+	impCoords.push(coords[state+50*i])
+    }
+    console.log(state)
+    console.log(impCoords)
+    //var chart = d3.select(".chart").attr("width",960).attr("height",600);
+    //var bar = chart.selectAll("rect");
+    //var barUpdate = bar.data(coords);
+    //var chart = d3.select(".chart").attr("width",960).attr("height",600);
+    //var bar = chart.selectAll("rect");
+    var barUpdate=bar.data(impCoords);
+    //svg.call(tip);
     var barEnter = barUpdate.enter().append("rect");
     barEnter.text(function(d) { return d; });
-    barEnter.attr("height", function(d) {return d[2]; })
+    barEnter.attr("height", function(d) {
+	if(d[2]==0||d[2]==-1){
+	    return 10;
+	}
+	else{
+	    return d[2];
+	}})
 	    .attr("width", function(d){return 10;})
 	    .attr("y",function(d){return d[1]-d[2];})
 	    .attr("x",function(d){return d[0];})
-	    .attr("class", "bar")
+	.attr("class", "bar")
+	.attr("class",function(d){return statesList[d[4]];})
 	//.on('mouseover', tip.show)
 	    .on('mouseover', tip.show)
-	    .on('mouseout', tip.hide);
+	.on('mouseout', tip.hide);
+    //if(bool==false){
+	//d3.select('.chart')
+  //.selectAll('rect')
+  //.data(impCoords)
+  //.exit()
+  //.remove();
+	//barUpdate.exit().remove()
+	//bar= chart.selectAll("rect");
+    //}
+}
+
+var barHide=function(){
+    //console.log(statesList[state])
+    //rectClass="rect."+statesList[state]
+    //d3.select("bar").selectAll("*").remove();
+    //d3.select("bar").html("");
+    //var clearRects=chart.selectAll("rect");
+    //clearRects.remove()
+    //bar=chart.selectAll("rect");
+    //bar.select(statesList[state]).remove();
 }
 
 
-
-
-
-<<<<<<< HEAD
 needs_work("murder");
-=======
-needs_work("moto_theft", make_bars);
->>>>>>> 02c3b4388406914c4639c2484b9a5ddc0b1633de
+//needs_work("moto_theft", make_bars);
 
 //barsShow();
