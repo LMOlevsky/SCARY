@@ -7,6 +7,7 @@ def csvToDictStates(file):
     listofcontents = body.split('\n')
     listofcontents.pop()
     titles = listofcontents.pop(0).split(',')
+    #print titles
     dict = {}
     
     for element in listofcontents:
@@ -16,8 +17,6 @@ def csvToDictStates(file):
         dict[organizedlist[1].upper()] = int(organizedlist[0])
 
     return dict
-	
-stateIDs = csvToDictStates('states')
 
 def csvToDictCities(filename):
     source = open(filename, 'rU')
@@ -84,22 +83,6 @@ def csvToDictCities(filename):
         dict[organizedlist[1]] = subdict
     return dict
 
-#make a dictionary of all the given data
-d0 = csvToDictCities('alabama-through-california.csv')
-d1 = csvToDictCities('colorado-through-hawaii.csv')
-d2 = csvToDictCities('illinois-through-missouri.csv')
-d3 = csvToDictCities('montana-through-ohio.csv')
-d4 = csvToDictCities('oklahoma-through-wisconsin.csv')
-
-#combine all the cities
-all = dict(d0.items() + d1.items() + d2.items() + d3.items() + d4.items())
-
-#to remove empty key
-try:
-    del all[""]
-except:
-    print
-
 #to create a csv to use for the database
 def writeData(d):
     with open('cities.csv', 'wb') as f:  # Just use 'w' mode in 3.x
@@ -108,5 +91,25 @@ def writeData(d):
         for key in d:
             w.writerow(d[key].values())
 
-writeData(all)
+if __name__ == "__main__":
 
+    stateIDs = csvToDictStates('states')
+    
+    #make a dictionary of all the given data
+    d0 = csvToDictCities('alabama-through-california.csv')
+    d1 = csvToDictCities('colorado-through-hawaii.csv')
+    d2 = csvToDictCities('illinois-through-missouri.csv')
+    d3 = csvToDictCities('montana-through-ohio.csv')
+    d4 = csvToDictCities('oklahoma-through-wisconsin.csv')
+
+    
+    #combine all the cities
+    all = dict(d0.items() + d1.items() + d2.items() + d3.items() + d4.items())
+
+    #to remove empty key
+    try:
+        del all[""]
+    except:
+        print
+
+    writeData(all)

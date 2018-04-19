@@ -1,6 +1,16 @@
 import sqlite3
 import csv
+import csvToDict
 import dbBuilder
+
+#c is the cursor
+#returns a list where each index is the name of the state with that id
+def getStates(c):
+    stateIDs = csvToDict.csvToDictStates('./data/states')
+    ans = [''] * 50
+    for entry in stateIDs:
+        ans[stateIDs[entry]] = entry
+    return ans
 
 #helper function to compare the rates of crime in each city for each state
 def compareRates(id,typeNum,c):
@@ -85,6 +95,11 @@ if __name__ == "__main__":
     #examples
     db = dbBuilder.openDB()
     c = dbBuilder.createCursor(db)
+
+    
+    states = getStates(c);
+    print states
+    print len(states)
     
     murder = percentages('Murder',c)
     murderHighest = crimeCount('Murder',c)
