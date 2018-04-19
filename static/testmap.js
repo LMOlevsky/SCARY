@@ -145,6 +145,7 @@ var needs_work = function(tag) {
 //		console.log(d);
 		hovering(i, states, tag);
 		barsShow(i)
+		document.getElementById("boxText").innerHTML=statesList[i].replace(/\'/g, "")  
 	    })
 	    .on('mouseout', function(d,i) {
 		hovering(-1, states, tag);
