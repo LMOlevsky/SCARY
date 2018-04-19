@@ -14,13 +14,32 @@ var types=[]
 // }
 
 //var types=["Murder"]
-function update(){
-    checkbox=document.getElementById("showMurder")
-    if(checkbox.checked==true){
-    //if(document.getElementById("showProp").checked){
-	types.push("Murder")
+function update(el){
+    console.log(el.id);
+    //checkbox=document.getElementById("showMurder")
+    if(el.checked==true){
+	//if(document.getElementById("showProp").checked){
+	if(el.id=="showMurder"){
+	    types.push("Murder")
 	//alert("hi")
-	needs_work("murder");
+	    needs_work("murder");
+	}
+	else if(el.id=="showArson"){
+	    types.push("Arson")
+	    needs_work("arson");
+	}
+	else if(el.id=="showRape"){
+	    types.push("Rape")
+	    needs_work("rape");
+	}
+	else if(el.id=="showMoto_theft"){
+	    types.push("MotorVehicleTheft")
+	    needs_work("moto_theft");
+	}
+	else if(el.id=="showProp"){
+	    types.push("PropertyCrime")
+	    needs_work("prop");
+	}
     }
     else{
 	ind = types.indexOf("Murder");
