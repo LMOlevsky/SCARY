@@ -225,7 +225,7 @@ var make_bars = function() {
     var coords=[] //append values to this list based on the types of crime user checks off.  each element in coords is a list of the form [xcor, ycor, height (may be divided so it fits on screen), typeOfCrime (necessary for label)]
 
     for(j=0;j<numSelected;j++){
-	for(i=0;i<33;i++){
+	for(i=0;i<50;i++){
 	    temp=[];
 	    temp.push(stateCoors[i][0]+j*11);
 	    temp.push(stateCoors[i][1]);
@@ -285,6 +285,7 @@ var make_bars = function() {
 	    }
 	    //console.log(m[i])
 	    temp.push(text2);
+	    temp.push(i)
 	    coords.push(temp);
 	}
     }
@@ -327,6 +328,7 @@ var chart = d3.select(".chart").attr("width",960).attr("height",600);
 var bar = chart.selectAll("rect");
 var barUpdate = bar.data(coords);
 
+    
 //Adds label to bars
 //To make sure bars fit on the screen, actual numbers were divided by certain numbers like 10 (e.g. 5000 burglaries -> 500.  In that case, height of bar would be 500.  The "text" of the label needs the actual crime numbers, so we multiply the data (height) back
 var tip = d3.tip()
@@ -350,7 +352,15 @@ var tip = d3.tip()
 	else{
 	    text=(parseInt(d[2])*10)+""
 	}
-    return "<strong>"+d[3]+": </strong> <span style='color:red'>" + text + "</span>"; //d[3] refers to the type of crime (e.g. "Murder") while text refers to the actual number of crimes
+	var statesList=document.getElementById("states").innerHTML
+	statesList= statesList.replace(/[[\]]/g,'')
+    //data=data.match(/\S+/g)
+	statesList=statesList.split(",")
+	//console.log(statesList)
+	ind=d[4]
+	stateName=statesList[ind]
+	//console.log(stateName)
+	return "<strong>"+stateName.replace(/'/g, "")+"<br>"+d[3]+": </strong> <span style='color:red'>" + text + "</span>"; //d[3] refers to the type of crime (e.g. "Murder") while text refers to the actual number of crimes
   })
 
 svg.call(tip);
