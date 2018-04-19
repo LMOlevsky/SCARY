@@ -1,16 +1,32 @@
 var svg = d3.select("svg");
 var path = d3.geoPath();
 var coords=[]
+var types=[]
 
 //POSSIBILITIES: ["Murder","Arson","Violent crime","Motor vehicle theft","Property crime","Aggravated assault","Robbery","Burglary","Larceny theft","Rape"]
 
-var types=["Murder"]
+// document.getElementById("showMurder").onclick=function(){
+//     if(this.checked){
+// 	types.push("Murder")
+// 	alert("hi")
+// 	needs_work("murder");
+//     }
+// }
+
+//var types=["Murder"]
 function update(){
-    checkbox=document.getElementById("showProp")
+    checkbox=document.getElementById("showMurder")
     if(checkbox.checked==true){
     //if(document.getElementById("showProp").checked){
-	types.push("PropertyCrime")
-	alert("hi")
+	types.push("Murder")
+	//alert("hi")
+	needs_work("murder");
+    }
+    else{
+	ind = types.indexOf("Murder");
+	types.splice(ind, 1);
+	//Need to clear bars
+	//console.log(types)
     }
 }
 
@@ -483,7 +499,7 @@ var barHide=function(){
 }
 
 
-needs_work("murder");
+//needs_work("murder");
 //needs_work("moto_theft", make_bars);
 
 //barsShow();
