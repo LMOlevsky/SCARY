@@ -1,7 +1,10 @@
 var svg = d3.select("svg");
 var path = d3.geoPath();
 var coords=[]
+var impCoords=[]
 var types=[]
+var onBar=false;
+var again=false;
 
 //POSSIBILITIES: ["Murder","Arson","Violent crime","Motor vehicle theft","Property crime","Aggravated assault","Robbery","Burglary","Larceny theft","Rape"]
 
@@ -18,6 +21,9 @@ function update(el){
     console.log(el.id);
     //checkbox=document.getElementById("showMurder")
     if(el.checked==true){
+	coords=[]
+	impCoords=[]
+	console.log("types length "+types.length)
 	//if(document.getElementById("showProp").checked){
 	if(el.id=="showMurder"){
 	    types.push("Murder")
@@ -176,16 +182,29 @@ var needs_work = function(tag) {
 		return color(tag) + states[i] +")" ;
 	    })
 	    .on('mouseover', function(d, i) {
+		console.log()
 //		console.log("What");
 //		console.log(d);
 		hovering(i, states, tag);
-		barsShow(i)
+		numTimes=types.length
+		console.log(numTimes +" times")
+		console.log("le "+coords.length)
+		for(j=0;j<numTimes;j++){
+		    console.log(i)
+		    console.log(i+50*j)
+		    console.log("c "+coords[i+50*j])
+		    impCoords.push(coords[i+50*j])
+		}
+		console.log("IMPO" +impCoords)
+		barsShow(i,true)
 		document.getElementById("boxText").innerHTML=statesList[i].replace(/\'/g, "")  
 	    })
 	    .on('mouseout', function(d,i) {
+		//console.log("moving out")
+		again=true
 		hovering(-1, states, tag);
-		//barsShow(i,false)
-		barHide()
+		barsShow(i,false)
+		//barHide()
 	    });
 
 	
@@ -274,11 +293,12 @@ var make_bars = function(listTypes) {
     
     numSelected=listTypes.length //how many types of crimes user checked off 
     //var coords=[] //append values to this list based on the types of crime user checks off.  each element in coords is a list of the form [xcor, ycor, height (may be divided so it fits on screen), typeOfCrime (necessary for label)]
-
+    ind=numSelected-1
+    //for(j=0;j<numSelected;j++){
     for(j=0;j<numSelected;j++){
 	for(i=0;i<50;i++){
 	    temp=[];
-	    temp.push(stateCoors[i][0]+j*11);
+	    temp.push(stateCoors[i][0]+(j)*11);
 	    temp.push(stateCoors[i][1]);
 	    text="";
 	    divide=1;
@@ -343,6 +363,7 @@ var make_bars = function(listTypes) {
 	    coords.push(temp);
 	}
     }
+    console.log("Coords "+coords.length)
 }
 //IDEA: when user selects say 2 types of crimes, we need to append [xcor,ycor,heightOfBar,typeOfCrimeSelected] to "coords list"
 //for each state, check how many lists in "coords" already have those x and y cors and then generate updated xcor (+i*11) for this current bar
@@ -460,16 +481,33 @@ barEnter.style("height", function(d) {return d[2] + "px"; })
 var chart = d3.select(".chart").attr("width",960).attr("height",600);
 var bar = chart.selectAll("rect");
 
-var barsShow=function(state){
+function mouseOnBar(a,b){
+    tip.show(a,b);
+    onBar=true;
+    console.log("on")
+}
+
+function mouseNot(a,b){
+    tip.hide(a,b);
+    onBar=false;
+    console.log("off")
+    again=true
+}
+
+var barsShow=function(state, bool){
     //var types=["Murder"]
     //var coords=[]
-    var impCoords=[]
+    //var impCoords=[]
     //make_bars(types)
-    numTimes=types.length
-    for(i=0;i<numTimes;i++){
-	impCoords.push(coords[state+50*i])
-    }
-    console.log(state)
+
+    
+    //numTimes=types.length
+    //for(i=0;i<numTimes;i++){
+	//impCoords.push(coords[state+50*i])
+    //}
+
+    
+    //console.log(state)
     console.log(impCoords)
     //var chart = d3.select(".chart").attr("width",960).attr("height",600);
     //var bar = chart.selectAll("rect");
@@ -478,31 +516,48 @@ var barsShow=function(state){
     //var bar = chart.selectAll("rect");
     var barUpdate=bar.data(impCoords);
     //svg.call(tip);
-    var barEnter = barUpdate.enter().append("rect");
-    barEnter.text(function(d) { return d; });
-    barEnter.attr("height", function(d) {
-	if(d[2]==0||d[2]==-1){
-	    return 10;
-	}
-	else{
-	    return d[2];
-	}})
-	    .attr("width", function(d){return 10;})
-	    .attr("y",function(d){return d[1]-d[2];})
-	    .attr("x",function(d){return d[0];})
-	.attr("class", "bar")
-	.attr("class",function(d){return statesList[d[4]];})
-	//.on('mouseover', tip.show)
-	    .on('mouseover', tip.show)
-	.on('mouseout', tip.hide);
-    //if(bool==false){
+    //if(bool==true&&onBar==false&&again==false){
+    if(bool==true){
+	onBar=true
+	var barEnter = barUpdate.enter().append("rect");
+	//barEnter.text(function(d) { return d; });
+	barEnter.attr("height", function(d) {
+	    if(parseInt(d[2])==0||parseInt(d[2])==-1){
+		return 10;
+	    }
+	    else{
+		return d[2];
+	    }})
+		.attr("width", function(d){return 10;})
+		.attr("y",function(d){return d[1]-d[2];})
+		.attr("x",function(d){return d[0];})
+	    .attr("class", "bar")
+	    .attr("class",function(d){return statesList[d[4]];})
+	    //.on('mouseover', tip.show)
+	    //.on('mouseout', tip.hide)
+	    //.on('mouseout', tip.hide);
+	    .on('mouseover', function(d,i){mouseOnBar(d,i)})
+	    .on('mouseout', function(d,i){mouseNot(d,i)});
+	console.log(barEnter.size());
+    }
+    else if(bool==false){
+    //else if(bool==false&&onBar==false&&again==true){
+	impCoords=[];
 	//d3.select('.chart')
   //.selectAll('rect')
   //.data(impCoords)
   //.exit()
   //.remove();
-	//barUpdate.exit().remove()
+    //barUpdate.exit().remove()
+    //console.log("del "+barEnter.size());
 	//bar= chart.selectAll("rect");
+	
+    //var clearRects=chart.selectAll("rect");
+    //clearRects.remove()
+	//console.log("del "+bar.size());
+	
+	//bar=chart.selectAll("rect");
+    }
     //}
 }
 
