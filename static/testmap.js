@@ -12,7 +12,7 @@ var again=false;
 //     if(this.checked){
 // 	types.push("Murder")
 // 	alert("hi")
-// 	needs_work("murder");
+// 	create_states("murder");
 //     }
 // }
 
@@ -25,31 +25,38 @@ function update(el){
 	impCoords=[]
 	console.log("types length "+types.length)
 	//if(document.getElementById("showProp").checked){
-	if(el.id=="showMurder"){
+	if(el.id=="show_murder"){
 	    types.push("Murder")
 	//alert("hi")
-	    needs_work("murder");
+	    create_states("murder");
 	}
-	else if(el.id=="showArson"){
+	else if(el.id=="show_arson"){
 	    types.push("Arson")
-	    needs_work("arson");
+	    create_states("arson");
 	}
-	else if(el.id=="showRape"){
+	else if(el.id=="show_rape"){
 	    types.push("Rape")
-	    needs_work("rape");
+	    create_states("rape");
 	}
-	else if(el.id=="showMoto_theft"){
+	else if(el.id=="show_moto_theft"){
 	    types.push("MotorVehicleTheft")
-	    needs_work("moto_theft");
+	    create_states("moto_theft");
 	}
-	else if(el.id=="showProp"){
+	else if(el.id=="show_prop"){
 	    types.push("PropertyCrime")
-	    needs_work("prop");
+	    create_states("prop");
 	}
     }
     else{
-	ind = types.indexOf("Murder");
-	types.splice(ind, 1);
+	var state_tag = el.id.substring(5, el.id.length);
+	console.log(state_tag);
+	var garbage = document.getElementById("state_"+state_tag);
+	console.log(garbage);
+	garbage.innerHTML='';
+	garbage.remove();
+	//console.log("whatup");
+//	ind = types.indexOf("Murder");
+//	types.splice(ind, 1);
 	//Need to clear bars
 	//console.log(types)
     }
@@ -143,7 +150,7 @@ function getCentroid(selection) {
 }
 
 
-var needs_work = function(tag) {
+var create_states = function(tag) {
 
     make_bars(types)
     svg.call(tip);
@@ -156,6 +163,7 @@ var needs_work = function(tag) {
 
 	g.append("g")
             .attr("class", "states")
+	    .attr("id", "state_" + tag)
 	    .selectAll("path")
             .data(topojson.feature(us, us.objects.states).features)
 	    .enter()
@@ -163,29 +171,15 @@ var needs_work = function(tag) {
             .attr("class","state-path")
             .attr("state", function(d) {
 		return d.state;
-            });
-	
-	svg.selectAll('.state-path')
-            .append("path")
-            .attr("d", path)
-            .attr("centroid", function(d, i) {
-		var centroid = path.centroid(d);
-            });
-
-	g.append("path")
-            .data(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-            .attr("id", "state-borders")
-            .attr("d", path);
-
-	d3.selectAll("path")
+            })
 	    .style("fill", function(d, i) {
 		return color(tag) + states[i] +")" ;
 	    })
 	    .on('mouseover', function(d, i) {
 		console.log()
-//		console.log("What");
-//		console.log(d);
-		hovering(i, states, tag);
+		//		console.log("What");
+		//		console.log(d);
+//		hovering(i, states, tag);
 		numTimes=types.length
 		console.log(numTimes +" times")
 		console.log("le "+coords.length)
@@ -202,10 +196,25 @@ var needs_work = function(tag) {
 	    .on('mouseout', function(d,i) {
 		//console.log("moving out")
 		again=true
-		hovering(-1, states, tag);
+//		hovering(-1, states, tag);
 		barsShow(i,false)
 		//barHide()
 	    });
+
+	
+	svg.selectAll('.state-path')
+            .append("path")
+            .attr("d", path)
+            .attr("centroid", function(d, i) {
+		var centroid = path.centroid(d);
+            });
+
+	g.append("path")
+            .data(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+            .attr("id", "state-borders")
+            .attr("d", path);
+
+	d3.selectAll("path")
 
 	
 
@@ -217,7 +226,7 @@ var needs_work = function(tag) {
 
 //==================================================
 //Hovering business
-
+/*
 //function for hovering to set exactly that state a certain color
 var hovering = function(state, states, tag) {
 
@@ -234,8 +243,8 @@ var hovering = function(state, states, tag) {
 	});
 
 };
-
-//needs_work("murder");
+*/
+//create_states("murder");
 var stateCoors =[[554.9820493311587, 384.6340056909818],
 		 [80.82258312576948, 283.40167845343757],
 		 [605.5763832710608, 265.66623033740524],
@@ -573,7 +582,7 @@ var barHide=function(){
 }
 
 
-//needs_work("murder");
-//needs_work("moto_theft", make_bars);
+//create_states("murder");
+//create_states("moto_theft", make_bars);
 
 //barsShow();
