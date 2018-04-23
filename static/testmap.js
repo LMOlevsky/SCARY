@@ -98,9 +98,20 @@ var max = function(arr) {
 	if (arr[i] > m) {
 	    m = arr[i];
 	}
-	console.log(arr[i]);
     }
-    console.log(m);
+    return m;
+}
+
+var min = function(arr) {
+    var m = arr[0];
+    for (i = 0; i < arr.length; i++) {
+	if (arr[i] <= 0) {
+	    //don't do anything
+	}
+	else if (arr[i] < m) {
+	    m = arr[i];
+	}
+    }
     return m;
 }
 
@@ -108,9 +119,9 @@ var max = function(arr) {
 //Configuring transparencies
 
 //scales the values from the db evenly from 0.05 to 0.9
-var alpha_range = function(val, max) {
+var alpha_range = function(val, max, min) {
     var alpha = d3.scaleLinear()
-	.domain([0, max])
+	.domain([min, max])
 	.range([0.05, 0.9]);
     return alpha(val);
 }
@@ -120,10 +131,11 @@ var alphas = function(tag) {
     var states = [];
     var data = document.getElementById(tag).innerHTML;
     var stats = JSON.parse("["+data+"]")[0];
-    var m = max(stats);
-    console.log(m);
+    var max_s = max(stats);
+    var min_s = min(stats);
+    console.log(min_s +" " +  max_s + "WE");
     for (var i = 0; i < 50; i++) {
-	states.push(alpha_range(stats[i], m));
+	states.push(alpha_range(stats[i], max_s, min_s));
     }
     return states;
 }
@@ -206,24 +218,15 @@ var create_states = function(tag) {
 		document.getElementById("boxText").innerHTML=statesList[i].replace(/\'/g, "")  
 	    })
 	    .on('mouseout', function(d,i) {
-		//console.log("moving out")
 		again=true
-//		hovering(-1, states, tag);
 		barsShow(i,false)
-var states_die = document.getElementsByClassName(statesList[i%50])
-	for (i = 0; i < states_die.length; i++) {
-//	    states_die[i].innerHTML='';
-	    states_die[i].remove();
-	    //	    console.log(states_die);
-console.log("debuggggggggggggggggggggin");
-if (i < 50){
-console.log(statesList[i%50] + " " + i + " " + " HIHUAHJBJHB");
-}
-console.log("debuggggggggggggggggggggin");
-
-	}
-
-		//barHide()
+		var states_die = document.getElementsByClassName(statesList[i])
+		console.log(states_die.length);
+		var length = states_die.length;
+		while(states_die[0] != '') {
+		    states_die[0].remove();
+		    console.log(states_die);
+		}
 	    });
 
 	
