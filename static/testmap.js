@@ -452,7 +452,6 @@ var tip = d3.tip()
   })
 
 var getCities = function(stateID,typeList){
-    console.log("called" + stateID + typeList)
     ans = []
     
     //get the indeces for the crimes we want
@@ -494,10 +493,8 @@ var getCities = function(stateID,typeList){
     all = [];
     
     for(j = 0; j < theStats.length; j++){
-	console.log(theStats[j])
 	sta = []
 	sta.push(theStats[j].split(","))
-	console.log(sta)
 	all.push(sta)
     }
 

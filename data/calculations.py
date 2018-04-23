@@ -25,7 +25,7 @@ def getCitiesStats(c):
             stats.append(entry[0])
             stats.append(entry[1])
             stats.append(entry[2])
-            stats.append(entry[12])
+            stats.append(entry[13])
             stats.append(entry[4])
             stats.append(entry[6])
         
