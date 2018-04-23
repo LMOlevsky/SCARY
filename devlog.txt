@@ -1,0 +1,115 @@
+SCARY - Crime Rates
+Jenny Gao, Kristin Lin, Levi Olevsky, Sonal Parab
+Period 8 Software Development Project 01
+
+Devlog:
+olevskyL -- 2018-04-10 14:01
+added hover map
+
+linK -- 2018-04-11 14:03
+started flask
+
+olevskyL -- 2018-04-11 14:03
+worked on map
+
+linK -- 2018-04-11 13:30
+basic flask
+
+olevskyL -- 2018-04-12 13:31
+map testing
+
+olevskyL -- 2018-04-12 22:30
+map shading
+
+linK -- 2018-04-12 23:20
+coloring the states
+
+parabS -- 2018-04-13 01:30
+organizing the data and database
+
+parabS -- 2018-04-15 22:05
+database functions
+
+linK -- 2018-04-16 00:38
+linking db and flask
+
+parabS -- 2018-04-16 01:30
+fixing db bugs
+
+linK -- 2018-04-16 14:05
+started javascript
+
+linK -- 2018-04-16 23:09
+map color transparencies
+
+olevskyL -- 2018-04-17 14:01
+added different colors for different crimes
+
+gaoJ -- 2018-04-17 21:52
+worked on hovering and bar graphs
+
+parabS -- 2018-04-17 22:37
+added crimeCount database functions
+
+parabS -- 2018-04-18 01:31
+added percentages database functions
+
+olevskyL -- 2018-04-18 01:48
+added buttons and color variations
+
+gaoJ -- 2018-04-18 14:05
+worked on javascript
+
+gaoJ -- 2018-04-18 19:39
+worked on coordinates for map 
+
+linK -- 2018-04-18 20:05
+started centroid
+
+parabS -- 2018-04-18 20:30
+added states database functions
+
+linK -- 2018-04-18 21:10
+worked on coordinates for map
+
+gaoJ -- 2018-04-18 22:58
+labeled states on bar graph 
+
+linK -- 2018-04-18 23:22
+worked on styling
+
+linK -- 2018-04-19 01:56
+fixed transparencies
+
+gaoJ -- 2018-04-19 14:00
+fixed bar functions
+
+gaoJ -- 2018-04-19 18:47
+worked on side bar and event listeners
+
+gaoJ -- 2018-04-19 22:11
+worked on coordinates
+
+linK -- 2018-04-22 00:06
+fixed map coloring overlapping
+
+linK -- 2018-04-22 22:29
+fixing bar transitions
+
+parabS -- 2018-04-22 22:30
+added cities database functions
+
+olevskyL -- 2018-04-22 22:31
+fixing bar hovering
+
+linK -- 2018-04-23 00:25
+added caption for hovering
+
+olevskyL -- 2018-04-23 00:33
+added project description
+
+linK -- 2018-04-23 02:52
+fixed captions
+
+parabS -- 2018-04-23 04:20
+added city data sidebar
