@@ -538,16 +538,17 @@ var barsShow=function(state, bool){
 	    .attr("x",function(d){return d[0];})
 	    .attr("class", "bar")
 	    .attr("class",function(d){return statesList[d[4]];})
+	    .attr('info', function(d,i){mouseOnBar(d,i)});
 	//.on('mouseover', tip.show)
 	//.on('mouseout', tip.hide)
 	//.on('mouseout', tip.hide);
-	    .on('mouseover', function(d,i){mouseOnBar(d,i)})
-	    .on('mouseout', function(d,i){mouseNot(d,i)});
+//	    .on('mouseover', function(d,i){mouseOnBar(d,i)})
+//	    .on('mouseout', function(d,i){mouseNot(d,i)});
 	console.log(barEnter.size());
     }
     else if(bool==false){
     //else if(bool==false&&onBar==false&&again==true){
-	impCoords=[];
+
 	//d3.select('.chart')
   //.selectAll('rect')
   //.data(impCoords)
