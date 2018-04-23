@@ -548,7 +548,7 @@ var barsShow=function(state, bool){
     }
     else if(bool==false){
     //else if(bool==false&&onBar==false&&again==true){
-
+impCoords = [];
 	//d3.select('.chart')
   //.selectAll('rect')
   //.data(impCoords)
