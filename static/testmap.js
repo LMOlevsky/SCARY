@@ -19,6 +19,27 @@ var again=false;
 //var types=["Murder"]
 function update(el){
     console.log(el.id);
+    if(el.id=="show_murder"){
+	types.push("Murder")
+	//alert("hi")
+	create_states("murder");
+    }
+    else if(el.id=="show_arson"){
+	types.push("Arson")
+	create_states("arson");
+    }
+    else if(el.id=="show_rape"){
+	types.push("Rape")
+	create_states("rape");
+    }
+    else if(el.id=="show_moto_theft"){
+	types.push("MotorVehicleTheft")
+	create_states("moto_theft");
+    }
+    else if(el.id=="show_prop"){
+	types.push("PropertyCrime")
+	create_states("prop");
+    }
     //checkbox=document.getElementById("showMurder")
     if(el.checked==true){
 	coords=[]
@@ -48,6 +69,7 @@ function update(el){
 	}
     }
     else{
+
 	var state_tag = el.id.substring(5, el.id.length);
 	console.log(state_tag);
 	var garbage = document.getElementById("state_"+state_tag);
@@ -55,8 +77,15 @@ function update(el){
 	garbage.innerHTML='';
 	garbage.remove();
 	//console.log("whatup");
-//	ind = types.indexOf("Murder");
-//	types.splice(ind, 1);
+
+	garbage = document.getElementsByTagName("rect");
+	for (i = 0; i < garbage.length; i++) {
+	    garbage[i].innerHTML='';
+	    garbage[i].remove();
+//	    console.log(garbage);
+	}
+	ind = types.indexOf();
+	types.splice(ind, 1);
 	//Need to clear bars
 	//console.log(types)
     }
@@ -374,44 +403,12 @@ var make_bars = function(listTypes) {
     }
     console.log("Coords "+coords.length)
 }
-//IDEA: when user selects say 2 types of crimes, we need to append [xcor,ycor,heightOfBar,typeOfCrimeSelected] to "coords list"
-//for each state, check how many lists in "coords" already have those x and y cors and then generate updated xcor (+i*11) for this current bar
-
-/*
-function howManyTimes(state){
-    xCor=coords[state][0]
-    yCor=coords[state][1]
-    count=0
-    for(i=0;i<coords.length;i++){
-	if(coords[i][0]==xCor && coords[i][1]==yCor){
-	    count+=1
-	}
-    }
-    return count
-}
-//e.g. howManyTimes(0) is for Arkansas
-*/
-
-//======================================================================
-
-/*             DON"T KNOW WHAT THIS IS FOR BUT COMMENTED 
 
 
-//var circles=svg.append("g").selectAll("circle").data(coords).enter()
-var circles=front.selectAll("circle").data(coords).enter()
-circles.append("circle").attr("cx",function(d){return d[0];})
-    .attr("cy",function(d){return d[1];})
-    .attr("r",function(d){return 5;})
-    .style("fill",function(d){return "blue";});
-*/
-//======================================================================
 
-//console.log(getCentroid(svg.selectAll("path")));
-//console.log(svg.selectAll("path"));
 
-//var chart = d3.select(".chart").attr("width",960).attr("height",600);
-//var bar = chart.selectAll("rect");
-//var barUpdate = bar.data(coords);
+
+
 var statesList=document.getElementById("states").innerHTML
 statesList= statesList.replace(/[[\]]/g,'')
     //data=data.match(/\S+/g)
@@ -537,14 +534,14 @@ var barsShow=function(state, bool){
 	    else{
 		return d[2];
 	    }})
-		.attr("width", function(d){return 10;})
-		.attr("y",function(d){return d[1]-d[2];})
-		.attr("x",function(d){return d[0];})
+	    .attr("width", function(d){return 10;})
+	    .attr("y",function(d){return d[1]-d[2];})
+	    .attr("x",function(d){return d[0];})
 	    .attr("class", "bar")
 	    .attr("class",function(d){return statesList[d[4]];})
-	    //.on('mouseover', tip.show)
-	    //.on('mouseout', tip.hide)
-	    //.on('mouseout', tip.hide);
+	//.on('mouseover', tip.show)
+	//.on('mouseout', tip.hide)
+	//.on('mouseout', tip.hide);
 	    .on('mouseover', function(d,i){mouseOnBar(d,i)})
 	    .on('mouseout', function(d,i){mouseNot(d,i)});
 	console.log(barEnter.size());
