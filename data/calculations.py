@@ -15,14 +15,22 @@ def getStates(c):
 #type is the crime, c is the cursor
 #returns a list where each index is a dictionary with the city name
 # as the key and the deaths as the value
-def getCities(id,type,c):
+def getCitiesStats(c):
     ans = []
     types = ["City","Murder","Arson","Violent crime","Motor vehicle theft","State","Property crime","Aggravated assault","Robbery","Year","Burglary","Larceny theft","ID","Rape","Population"]
-    typeNum = types.index(type)
-    for entry in c.execute("SELECT * FROM cities WHERE ID = %d"%(id)):
-        city = entry[0]
-        deaths = entry[typeNum]
-        ans.append({city:deaths})
+    for i in range(0,50):
+        data = []
+        for entry in c.execute("SELECT * FROM cities WHERE ID = %d"%(i)):
+            stats = []
+            stats.append(entry[0])
+            stats.append(entry[1])
+            stats.append(entry[2])
+            stats.append(entry[12])
+            stats.append(entry[4])
+            stats.append(entry[6])
+        
+            data.append(stats)
+        ans.append(data)
     return ans 
 
 #helper function to compare the rates of crime in each city for each state
@@ -114,8 +122,9 @@ if __name__ == "__main__":
     print states
     print len(states)
 
-    cities = getCities(1,"Arson",c);
+    cities = getCitiesStats(c);
     print cities
+    print len(cities)
     
     murder = percentages('Murder',c)
     murderHighest = crimeCount('Murder',c)

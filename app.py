@@ -26,10 +26,11 @@ def root():
     cities.append(calculations.dangerousCities("Rape", cursor))
     cities.append(calculations.dangerousCities("Motor vehicle theft", cursor))
     cities.append(calculations.dangerousCities("Property crime", cursor))
+    citiesStats=calculations.getCitiesStats(cursor)
     dbBuilder.closeDB(db)
     return render_template('testmap.html',
                            murder=murder, arson=arson,
-                           rape=rape, moto_theft=moto_theft, prop=prop, murder2=murder2, arson2=arson2, rape2=rape2, moto_theft2=moto_theft2, prop2=prop2, states=states, cities = cities)
+                           rape=rape, moto_theft=moto_theft, prop=prop, murder2=murder2, arson2=arson2, rape2=rape2, moto_theft2=moto_theft2, prop2=prop2, states=states, cities = cities, citiesStats=citiesStats)
 
 if __name__ == "__main__":
     app.debug = True

@@ -216,7 +216,13 @@ var create_states = function(tag) {
 		console.log("IMPO" +impCoords)
 		barsShow(i,true)
 		mouseOnBar(impCoords, 0);
-		document.getElementById("boxText").innerHTML=statesList[i].replace(/\'/g, "")  
+		document.getElementById("boxText").innerHTML=statesList[i].replace(/\'/g, "")
+		
+		dataStuff = getCities(i,types)
+		//console.log(dataStuff)
+
+		document.getElementById("boxText").innerHTML+=dataStuff
+		
 	    })
 	    .on('mouseout', function(d,i) {
 		again=true
@@ -444,6 +450,75 @@ var tip = d3.tip()
 	stateName=statesList[ind]
 	return "<strong>"+stateName.replace(/'/g, "")+ ttext; //d[3] refers to the type of crime (e.g. "Murder") while text refers to the actual number of crimes
   })
+
+var getCities = function(stateID,typeList){
+    console.log("called" + stateID + typeList)
+    ans = []
+    
+    //get the indeces for the crimes we want
+    indeces = []
+    for (t = 0; t < typeList.length; t++){
+	type = typeList[t]
+	var typesList = ["Murder","Arson","Rape","MotorVehicleTheft","PropertyCrime"]
+	var index = typesList.indexOf(type)
+	indeces.push(index)
+    }
+    //console.log("indeces" + indeces)
+	
+    var citieshtml = document.getElementById("citiesStats").innerHTML
+    citieshtml = citieshtml.replace(/u&#39;/g,"'")
+    citieshtml = citieshtml.replace(/&#39;/g,"'")
+    citieshtml = citieshtml.replace(/u/g,"")
+    citieshtml = citieshtml.replace(/'/g,"")
+    citieshtml = citieshtml.replace("[]","]]")
+    citieshtml = citieshtml.replace("[]","]]")
+    citieshtml = citieshtml.replace("[]","]]")
+    citieshtml = citieshtml.replace("[]","]]")
+    citieshtml = citieshtml.replace("[]","]]")
+    citieshtml = citieshtml.replace("[]","]]")
+    
+    var data = citieshtml.split("]]")
+
+    var stateData = data[stateID]
+    stateData += "],"
+
+    stateData = stateData.replace(/\[/g,"")
+    theStats = stateData.split("],")
+    theStats.pop()
+    theStats[0] = theStats[0].substring(1)
+
+    //console.log("stateData" + stateData)
+    //console.log("theStats" + theStats)
+    //console.log(theStats.length)
+
+    all = [];
+    
+    for(j = 0; j < theStats.length; j++){
+	console.log(theStats[j])
+	sta = []
+	sta.push(theStats[j].split(","))
+	console.log(sta)
+	all.push(sta)
+    }
+
+    //sta is [city,murder,arson,rape,moto,prop]
+    
+    var htmlString = "<br><br>"
+    var labels = ["Murder","Arson","Rape","Motor Vehicle Theft","Property Crime"]
+	
+    for(k = 0; k < all.length;k++){
+	d = all[k][0]
+	
+	var cityStats = "<b>" + d[0] + "</b><br>"
+	for (i = 0; i < 5; i++){
+	    if (indeces.indexOf(i) != -1){
+		cityStats += labels[i] + ": " + d[i+1] + "<br>"
+	    }
+	}
+	htmlString += cityStats + "<br>"
+    }
+    return htmlString
+}
 
 //svg.call(tip);
 
