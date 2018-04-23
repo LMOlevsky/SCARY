@@ -19,54 +19,37 @@ var again=false;
 //var types=["Murder"]
 function update(el){
     console.log(el.id);
+    var bar_tag = "";
+    var state_tag = "";
     if(el.id=="show_murder"){
-	types.push("Murder")
-	//alert("hi")
-	create_states("murder");
+	bar_tag = "Murder";
+	state_tag = "murder"
     }
     else if(el.id=="show_arson"){
-	types.push("Arson")
-	create_states("arson");
+	bar_tag = "Arson"
+	state_tag = "arson"
     }
     else if(el.id=="show_rape"){
-	types.push("Rape")
-	create_states("rape");
+	bar_tag = "Rape"
+	state_tag = "rape"
     }
     else if(el.id=="show_moto_theft"){
-	types.push("MotorVehicleTheft")
-	create_states("moto_theft");
+	bar_tag = "MotorVehicleTheft"
+	state_tag = "moto_theft"
     }
     else if(el.id=="show_prop"){
-	types.push("PropertyCrime")
-	create_states("prop");
+	bar_tag = "PropertyCrime"
+	state_tag = "prop"
     }
+    
     //checkbox=document.getElementById("showMurder")
     if(el.checked==true){
 	coords=[]
 	impCoords=[]
 	console.log("types length "+types.length)
 	//if(document.getElementById("showProp").checked){
-	if(el.id=="show_murder"){
-	    types.push("Murder")
-	//alert("hi")
-	    create_states("murder");
-	}
-	else if(el.id=="show_arson"){
-	    types.push("Arson")
-	    create_states("arson");
-	}
-	else if(el.id=="show_rape"){
-	    types.push("Rape")
-	    create_states("rape");
-	}
-	else if(el.id=="show_moto_theft"){
-	    types.push("MotorVehicleTheft")
-	    create_states("moto_theft");
-	}
-	else if(el.id=="show_prop"){
-	    types.push("PropertyCrime")
-	    create_states("prop");
-	}
+	types.push(bar_tag);
+	create_states(state_tag);
     }
     else{
 
@@ -80,11 +63,11 @@ function update(el){
 
 	garbage = document.getElementsByTagName("rect");
 	for (i = 0; i < garbage.length; i++) {
-	    garbage[i].innerHTML='';
+//	    garbage[i].innerHTML='';
 	    garbage[i].remove();
-//	    console.log(garbage);
+	    //	    console.log(garbage);
 	}
-	ind = types.indexOf();
+	ind = types.indexOf(bar_tag);
 	types.splice(ind, 1);
 	//Need to clear bars
 	//console.log(types)
@@ -227,6 +210,19 @@ var create_states = function(tag) {
 		again=true
 //		hovering(-1, states, tag);
 		barsShow(i,false)
+var states_die = document.getElementsByClassName(statesList[i%50])
+	for (i = 0; i < states_die.length; i++) {
+//	    states_die[i].innerHTML='';
+	    states_die[i].remove();
+	    //	    console.log(states_die);
+console.log("debuggggggggggggggggggggin");
+if (i < 50){
+console.log(statesList[i%50] + " " + i + " " + " HIHUAHJBJHB");
+}
+console.log("debuggggggggggggggggggggin");
+
+	}
+
 		//barHide()
 	    });
 
