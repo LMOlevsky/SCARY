@@ -215,6 +215,7 @@ var create_states = function(tag) {
 		}
 		console.log("IMPO" +impCoords)
 		barsShow(i,true)
+		mouseOnBar(impCoords, 0);
 		document.getElementById("boxText").innerHTML=statesList[i].replace(/\'/g, "")  
 	    })
 	    .on('mouseout', function(d,i) {
@@ -409,50 +410,39 @@ var make_bars = function(listTypes) {
 
 
 var statesList=document.getElementById("states").innerHTML
+var citiesList=document.getElementById("cities").innerHTML
 statesList= statesList.replace(/[[\]]/g,'')
+citiesList= citiesList.replace(/[[\]]/g,'')
     //data=data.match(/\S+/g)
 statesList=statesList.split(",")
+citiesList=citiesList.split(",")
     
 //Adds label to bars
 //To make sure bars fit on the screen, actual numbers were divided by certain numbers like 10 (e.g. 5000 burglaries -> 500.  In that case, height of bar would be 500.  The "text" of the label needs the actual crime numbers, so we multiply the data (height) back
 var tip = d3.tip()
-  .attr('class', 'd3-tip')
+    .attr('class', 'd3-tip')
     .html(function(d) {
-	if(parseInt(d[2])==0){
-	    text="0"
-	}
-	else if(parseInt(d[2])==-1){
-	    text="-1"
-	}
-	else{
-	    if(d[3]=="Property Crime"){
-		text=((parseInt(d[2])-50)*100)+""
+	d = impCoords;
+	var ttext= '';
+	var text;
+	for (i = 0; i < d.length; i++) {
+	    var ptext = "<br>"+d[i][3]+": </strong> <span style='color:red'>"; 
+	    if(parseInt(d[i][2])==0){
+		text="N/A"
 	    }
-	    else if(d[3]=="Arson"){
-		text=d[2]
-	    }
-	    else if(d[3]=="Rape"){
-		text=((parseInt(d[2])-50)*3)+""
-	    }
-	    else if(d[3]=="Murder"){
-		text=((parseInt(d[2])-50)*2)+""
-	    }
-	    else if(d[3]=="Burglary"){
-		text=((parseInt(d[2])-50)*20)+""
+	    else if(parseInt(d[i][2])==-1){
+		text="N/A"
 	    }
 	    else{
-		text=((parseInt(d[2])-50)*10)+""
+		text=citiesList[i*50+d[i][4]];
+		text=text.substring(2, text.length);
 	    }
+	    ptext += text + "</span>"
+	    ttext += ptext;
 	}
-	//var statesList=document.getElementById("states").innerHTML
-	//statesList= statesList.replace(/[[\]]/g,'')
-    //data=data.match(/\S+/g)
-	//statesList=statesList.split(",")
-	//console.log(statesList)
-	ind=d[4]
+	ind=d[0][4]
 	stateName=statesList[ind]
-	//console.log(stateName)
-	return "<strong>"+stateName.replace(/'/g, "")+"<br>"+d[3]+": </strong> <span style='color:red'>" + text + "</span>"; //d[3] refers to the type of crime (e.g. "Murder") while text refers to the actual number of crimes
+	return "<strong>"+stateName.replace(/'/g, "")+ ttext; //d[3] refers to the type of crime (e.g. "Murder") while text refers to the actual number of crimes
   })
 
 //svg.call(tip);
@@ -528,7 +518,7 @@ var barsShow=function(state, bool){
 	//barEnter.text(function(d) { return d; });
 	barEnter.attr("height", function(d) {
 	    if(parseInt(d[2])==0||parseInt(d[2])==-1){
-		return 10;
+		return 0;
 	    }
 	    else{
 		return d[2];
